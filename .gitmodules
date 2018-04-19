@@ -1,0 +1,6 @@
+[submodule "paho.mqtt.c"]
+	path = paho.mqtt.c
+	url = git@github.com:eclipse/paho.mqtt.c.git
+[submodule "gnome-cmake"]
+	path = gnome-cmake
+	url = git@github.com:nemequ/gnome-cmake.git
