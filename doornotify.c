@@ -15,6 +15,10 @@ MQTTClient_deliveryToken delivery_token;
 void conn_lost(void *context, char *cause)
 {
 	printf("MQTT connection lost: %s\n", cause);
+	while (MQTTClient_connect(client, &conn_opts) != MQTTCLIENT_SUCCESS) {
+		puts("MQTT: Cannot connect");
+		sleep(5);
+	}
 }
 
 void delivered(void *context, MQTTClient_deliveryToken dt)
