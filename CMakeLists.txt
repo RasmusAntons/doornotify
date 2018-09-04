@@ -11,5 +11,5 @@ find_package(GTK3)
 add_subdirectory(paho.mqtt.c)
 include_directories(${CMAKE_SOURCE_DIR}/paho.mqtt.c/src)
 
-add_executable(doornotify doornotify.c config.h)
+add_executable(doornotify doornotify.c config.h notification.h notification_linux.c notification_windows.c)
 target_link_libraries(doornotify glib-2.0 gdk_pixbuf-2.0 gobject-2.0 notify gtk-3 paho-mqtt3c paho-mqtt3a)
