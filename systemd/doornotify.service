@@ -1,0 +1,11 @@
+[Unit]
+Description=Doorbell notification provider
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/doornotify
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
