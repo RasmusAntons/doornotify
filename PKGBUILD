@@ -5,7 +5,7 @@ pkgdesc="Doorbell notification provider"
 arch=('any')
 url="https://github.com/RasmusAntons/doornotify"
 makedepends=('git' 'cmake')
-depends=('libnotify')
+depends=('libnotify' 'paho-mqtt-c')
 source=("git://github.com/RasmusAntons/doornotify.git")
 md5sums=('SKIP')
 
