@@ -6,6 +6,7 @@
 #include <signal.h>
 #include <MQTTClient.h>
 #include "config.h"
+#include <getopt.h>
 #include "notification.h"
 
 MQTTClient client;
@@ -47,10 +48,47 @@ int msg_arrvd(void *context, char *topicName, int topicLen, MQTTClient_message *
 
 int main(int argc, char **argv)
 {
+	char server[48];
+	char topic_doorbell[24];
+	char topic_dooropen[24];
 	char client_id[24];
+	static struct option long_options[] = {
+			{"server", required_argument, 0, 's'},
+			{"channel", required_argument, 0, 'c'},
+			{0, 0, 0, 0}
+	};
+	int opt, long_index = 0;
+
+	strcpy(server, MQTT_SERVER_URI);
+	strcpy(topic_doorbell, MQTT_TOPIC_DOORBELL);
+	strcpy(topic_dooropen, MQTT_TOPIC_DOOROPEN);
 	strcpy(client_id, "dntfy_");
 	gethostname(client_id + 6, 18);
 	client_id[23] = '\0';
+
+	while ((opt = getopt_long(argc, argv, "c:s:", long_options, &long_index)) != -1) {
+		switch (opt) {
+			case 's':
+				if (strlen(optarg) > 47) {
+					printf("invalid server: %s\n", optarg);
+					exit(EXIT_FAILURE);
+				}
+				strcpy(server, optarg);
+				break;
+			case 'c': {
+				int channel = atoi(optarg);
+				if (channel < 0 || channel > 999) {
+					printf("invalid channel id: %s\n", optarg);
+					exit(EXIT_FAILURE);
+				}
+				sprintf(topic_doorbell + 17, "%d", channel);
+				sprintf(topic_dooropen + 17, "%d", channel);
+				break;
+			}
+			default:
+				exit(EXIT_FAILURE);
+		}
+	}
 
 	notification_init(client_id, open_front_door);
 
